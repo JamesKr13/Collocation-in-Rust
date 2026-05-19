@@ -1,0 +1,8 @@
+[package]
+name = "collocation_dbp"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+nalgebra = "0.34.2"
+plotly = "0.14.1"
