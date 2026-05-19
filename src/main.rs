@@ -1,3 +1,4 @@
+use std::f64::consts::PI;
 use std::ops::Mul;
 
 use nalgebra::{DMatrix, DVector, Matrix, Vector2};
@@ -210,6 +211,8 @@ impl MultiIntervalDomain {
 }
 
 trait ODE {
+
+    // Residua is incorrect
     fn build_resiudal(&self,multi_interval_domain: &MultiIntervalDomain, u: &DVector<f64>, x: &DVector<f64>, bc_left: &BoundaryCondition, bc_right: &BoundaryCondition, residual_fn: impl Fn(Vec<f64>) -> f64) -> DVector<f64> {
         let n_intervals = multi_interval_domain.interval.len();
         let n_per = multi_interval_domain.interval[0].collocation_points().len();
@@ -223,7 +226,7 @@ trait ODE {
             let du_local = &d * &u_local;
             let d2u__local = &d * &du_local;
 
-            let row_start = if i == 0 {1} else {1};
+            let row_start = 1;
             let row_end = if i == n_intervals -1 {n_per-1} else {n_per -1};
 
             for local_row in row_start..row_end {
@@ -244,12 +247,14 @@ trait ODE {
 
             let du_left = &d_left * &u_left;
             let du_right = &d_right * &u_right;
-
+            println!("{}", interface_idx);
             F[interface_idx] = du_left[n_per-1] - du_right[0];
         }
 
         self.apply_vec(&mut F, multi_interval_domain, &u,bc_left, true, n_total, n_per, n_intervals);
         self.apply_vec(&mut F, multi_interval_domain,&u,bc_right, false, n_total, n_per, n_intervals);
+        
+        println!("{}", F);
 
         F
     }
@@ -258,6 +263,7 @@ trait ODE {
         u.rows(start, n_per).clone_owned()
     }
 
+    // Jacobian is incorrect
     fn build_jacobian(&self, u: &DVector<f64>, bc_left: &BoundaryCondition, bc_right: &BoundaryCondition, ode_jac: impl Fn(f64, f64, f64, &DMatrix<f64>) -> DVector<f64>) -> DMatrix<f64>;
 
     fn apply_matx(&self, A: &mut DMatrix<f64>,multi_interval_domain: &MultiIntervalDomain, bc: &BoundaryCondition, is_left: bool, n_total: usize, n_per: usize, u_intervals: usize) {
@@ -300,8 +306,51 @@ struct NonLinearODE<'a> {
 
 impl<'a> ODE for NonLinearODE<'a> {
     fn build_jacobian(&self, u: &DVector<f64>, bc_left: &BoundaryCondition, bc_right: &BoundaryCondition, ode_jac: impl Fn(f64, f64, f64, &DMatrix<f64>) -> DVector<f64>) -> DMatrix<f64> {
-        DMatrix::zeros(1,1)
+        let n_intervals = self.multi_interval_domain.interval.len();
+        let n_per = self.multi_interval_domain.interval[0].collocation_points().len();
+        let n_total = u.len();
+        let mut J = DMatrix::zeros(n_total, n_total);
+
+        for (i, interval) in self.multi_interval_domain.interval.iter().enumerate() {
+            let global_start = i * (n_per - 1);
+            let d  = interval.scaled_dmatrix();
+            let d2 = &d * &d;
+            let u_loc = self.local_u(u, i, n_per);
+
+            for local_row in 1..(n_per - 1) {
+                let global_row = global_start + local_row;
+
+                for local_col in 0..n_per {
+                    let global_col = global_start + local_col;
+
+                    let jac_val = d2[(local_row, local_col)] + if local_col == local_row { 3.0 * u_loc[local_row].powi(2) } else { 0.0 };
+
+                    J[(global_row, global_col)] += jac_val;
+                }
+            }
+        }
+
+        // continuity
+        for i in 0..(n_intervals - 1) {
+            let interface_idx = (i + 1) * (n_per - 1);
+            let d_left  = self.multi_interval_domain.interval[i].scaled_dmatrix();
+            let d_right = self.multi_interval_domain.interval[i + 1].scaled_dmatrix();
+            let left_start  = i * (n_per - 1);
+            let right_start = (i + 1) * (n_per - 1);
+
+            for j in 0..n_per {
+                J[(interface_idx, left_start  + j)] += d_left [(n_per - 1, j)];
+                J[(interface_idx, right_start + j)] -= d_right[(0,         j)];
+            }
+        }
+
+        self.apply_matx(&mut J, self.multi_interval_domain, bc_left,  true,  n_total, n_per, n_intervals);
+        self.apply_matx(&mut J, self.multi_interval_domain, bc_right, false, n_total, n_per, n_intervals);
+
+        J
     }
+
+    // test function 
 }
 struct LinearODE<'a>{
     multi_interval_domain: &'a MultiIntervalDomain
@@ -309,13 +358,7 @@ struct LinearODE<'a>{
 
 impl<'a> ODE for LinearODE<'a> {
 
-    fn build_jacobian(
-        &self,
-        u: &DVector<f64>,
-        bc_left: &BoundaryCondition,
-        bc_right: &BoundaryCondition,
-        ode_jac: impl Fn(f64, f64, f64, &DMatrix<f64>) -> DVector<f64>, // returns one row of J
-    ) -> DMatrix<f64> {
+    fn build_jacobian(&self, u: &DVector<f64>, bc_left: &BoundaryCondition, bc_right: &BoundaryCondition, ode_jac: impl Fn(f64, f64, f64, &DMatrix<f64>) -> DVector<f64>) -> DMatrix<f64> {
         let n_intervals = self.multi_interval_domain.interval.len();
         let n_per = self.multi_interval_domain.interval[0].collocation_points().len();
         let n_total = u.len();
@@ -336,7 +379,7 @@ impl<'a> ODE for LinearODE<'a> {
                
                 for local_col in 0..n_per {
                     let global_col = global_start + local_col;
-                    let d2 = (&d * &d)[(local_row, local_col)];
+                    let d2: f64 = (&d * &d)[(local_row, local_col)];
                     let nonlin = du_loc[local_row] * (local_col == local_row) as u8 as f64
                         + u_loc[local_row] * d[(local_row, local_col)];
                     J[(global_row, global_col)] += d2 + nonlin;
@@ -419,29 +462,31 @@ fn plot_solution(x: &DVector<f64>, u: &DVector<f64>, domain: &MultiIntervalDomai
 
 
 fn main() {
-    let domain = MultiIntervalDomain::new(3, -5.0, 5.0, 8);
+    let domain = MultiIntervalDomain::new(3, -5.0, 5.0, 3);
     let x = domain.global_collocation_points();
     let n = x.len();
-    let mut u = DVector::zeros(n);
+    // let mut u: DVector<f64> = x.map(|xi| (2.0*std::f64::consts::PI*xi/5.0).sin());
+    let mut u: DVector<f64> = DVector::zeros(n);
 
     let bc_left = BoundaryCondition::Dirichlet(0.0);
-    let bc_right = BoundaryCondition::Dirichlet(0.0);
-
-    let l_ode = LinearODE {multi_interval_domain: &domain};
-
-    for iter in 0..50 {
-        let F = l_ode.build_resiudal(&domain,
-            &u, &x, &bc_left, &bc_right,
-            |_parameters| _parameters[3] + _parameters[1] * _parameters[2] - _parameters[0].sin(), // u'' + u*u' = sin(x)
+    let bc_right = BoundaryCondition::Dirichlet(10.0);
+// (2.0*std::f64::consts::PI/5.0).powi(2)*p[0]*p[0]*((2.0*std::f64::consts::PI*p[0]/5.0)).sin()
+    let ode = NonLinearODE {multi_interval_domain: &domain};
+    for iter in 0..=100 {
+        let F = ode.build_resiudal(&domain, &u, &x, &bc_left, &bc_right,
+            |p| p[3] + p[1].powi(3) - p[0].sin(),
         );
-        let J = l_ode.build_jacobian(&u, &bc_left, &bc_right, |_, _, _, _| unreachable!());
-
+        let J = ode.build_jacobian(&u, &bc_left, &bc_right, |_, _, _, _| unreachable!());
+        println!("{}X{} To {}", J.nrows(), J.ncols(), F.nrows());
+        println!("{}", J);
+        println!("{}", F);
         let norm = F.norm();
         println!("Iter {iter:>2}: |F| = {norm:.3e}");
         if norm < 1e-10 { println!("Converged."); break; }
 
-        let delta = J.lu().solve(&(-&F)).expect("Singular");
-        u += delta;
+        let delta = J.lu().solve(&(-&F)).expect("singular");
+
+        u+= delta;
     }
 
     plot_solution(&x, &u, &domain, "Solution", "solution.html");
