@@ -129,7 +129,7 @@ fn main() {
         r.store(false, Ordering::SeqCst);
     }).expect("Error setting Ctrl-C handler");
 
-    iteration_loop(&NonlinearDiffusionODE, running); 
+    iteration_loop(&BratuODE, running); 
 }
 
 fn iteration_loop<O>(ode: &O, running: Arc<AtomicBool>) where O: ODE<Dual<f64>> + Sync{
@@ -139,7 +139,14 @@ fn iteration_loop<O>(ode: &O, running: Arc<AtomicBool>) where O: ODE<Dual<f64>> 
     let n_per = domain.get_interval(0).collocation_points().len();
     let pi = std::f64::consts::PI;
 
-    let mut u = DVector::from_vec(vec![1.0; n_total]);
+    // let mut u = DVector::from_vec(vec![1.0; n_total]);
+    let k = 5.0;
+    let x0 = 0.1;
+    let mut u = DVector::from_vec(
+    domain.global_collocation_points_raw().iter()
+        .map(|x| (k * (x - x0)).tanh())
+        .collect()
+);
     for iter in 0..=50 {
         if !running.load(Ordering::SeqCst) {
             println!("\nCtrl-C received at iter {iter}, plotting current approximation...");
@@ -161,6 +168,6 @@ fn iteration_loop<O>(ode: &O, running: Arc<AtomicBool>) where O: ODE<Dual<f64>> 
         let delta = banded_solve(&J, &(-&R), kl, ku);
         u += delta;
     }
-    plot_solution(&u, &domain, "Burgers ODE solution", "solution.html");
+    plot_solution(&u, &domain, "Test ODE solution", "solution1.html");
 }
 

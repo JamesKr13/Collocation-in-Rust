@@ -76,6 +76,12 @@ impl<T: Float + FromPrimitive> Dual<T> {
             eps: n * self.real.powf(n - T::one()) * self.eps,
         }
     }
+    pub fn exp(self) -> Dual<T> {
+        Dual {
+            real: T::exp(self.real),
+            eps:  T::exp(self.real)* self.eps,
+        }
+    }
 }
 
 impl<T> Mul<f64> for Dual<T>
@@ -91,6 +97,21 @@ where
         }
     }
 }
+
+impl<T> Sub<f64> for Dual<T>
+where
+    T: Sub<f64, Output = T> + Copy,
+{
+    type Output = Dual<T>;
+
+    fn sub(self, rhs: f64) -> Self::Output {
+        Dual {
+            real: self.real - rhs,
+            eps: self.eps, // derivative unchanged for constant shift
+        }
+    }
+}
+
 
 impl<T> Zero for Dual<T>
 where
