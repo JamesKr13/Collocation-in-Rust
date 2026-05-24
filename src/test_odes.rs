@@ -303,7 +303,7 @@ impl ODE<Dual<f64>> for ImportantOde {
 // Allen–Cahn  (bistable phase-field ODE)
 // u'' = u^3 – u
 // Exact: u(x) = tanh(x / sqrt(2))
-// Verify: u'' = –sech^2(x/√2)·tanh(x/sqrt(2)) = u^3 – u
+// Verify: u'' = –sech^2(x/sqrt(2)·tanh(x/sqrt(2)) = u^3 – u
 // f(x)  = 0
 // BCs:   u(–5) = tanh(–5/sqrt(2)),  u(5) = tanh(5/sqrt(2))
 pub struct AllenCahnODE;
