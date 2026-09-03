@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+        <script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+        
+</head>
+
+<body>
+    <div>
+        <div id="plotly-html-element" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+
+        <script type="module">
+            const graph_div = document.getElementById("plotly-html-element");
+            await Plotly.newPlot(graph_div, {"data":[{"type":"scatter","name":"L2 error (observed)","mode":"lines+markers","x":[3.0,5.0,7.0,9.0,11.0,13.0,15.0,17.0,19.0,21.0,23.0],"y":[6.399999999999997,3.183310415466435,1.2257449543245504,0.39481184787984686,0.09923972213433935,0.024961987370102537,0.005080812235436766,0.0012736341981573706,0.00024013353592831492,0.00007852093802772005,0.000019831795018794602],"line":{"width":2.0,"color":"steelblue"}},{"type":"scatter","name":"L-infinity error (observed)","mode":"lines+markers","x":[3.0,5.0,7.0,9.0,11.0,13.0,15.0,17.0,19.0,21.0,23.0],"y":[6.399999999999997,2.7215363511659834,0.9156177156177161,0.2710246493825281,0.06697106176987178,0.01670421729078342,0.0037173555171794437,0.0009551603330257841,0.0002144254211777774,0.00006512329395969019,0.000015615209006725195],"line":{"width":2.0,"color":"firebrick"}},{"type":"scatter","name":"Theory: O(ρ*^-n), ρ* = 1.618","mode":"lines","x":[3.0,5.0,7.0,9.0,11.0,13.0,15.0,17.0,19.0,21.0,23.0],"y":[0.2360679774997897,0.09016994374947424,0.034441853748633025,0.013155617496424838,0.00502499874064149,0.0019193787254996317,0.0007331374358574048,0.00028003358207258274,0.00010696331036034337,0.00004085634900844741,0.000015605736664998845],"line":{"width":1.5,"dash":"dash","color":"gray"}}],"layout":{"title":{"text":"Discretization error vs. polynomial degree"},"width":800,"height":600,"xaxis":{"title":{"text":"n"}},"yaxis":{"title":{"text":"error"},"type":"log"}},"config":{},"frames":null});
+        </script>
+    </div>
+</body>
+
+</html>
