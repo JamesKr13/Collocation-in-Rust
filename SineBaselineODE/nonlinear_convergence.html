@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+        <script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+        
+</head>
+
+<body>
+    <div>
+        <div id="plotly-html-element" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+
+        <script type="module">
+            const graph_div = document.getElementById("plotly-html-element");
+            await Plotly.newPlot(graph_div, {"data":[{"type":"scatter","name":"L2 error (observed)","mode":"lines+markers","x":[5.0,6.0,7.0,8.0,9.0,10.0,11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0],"y":[0.000024677977116256966,5.122309408910706e-7,3.013134651003478e-8,5.087521521294328e-10,2.45625126693142e-11,3.340127590593886e-13,1.3530791620416335e-14,2.919716823282317e-15,3.651222810414361e-15,9.511021136281786e-15,2.5639266891474075e-15,5.0681943842590246e-15,9.533713297596745e-15,4.2665036565409975e-15],"line":{"width":2.0,"color":"steelblue"}},{"type":"scatter","name":"L-infinity error (observed)","mode":"lines+markers","x":[5.0,6.0,7.0,8.0,9.0,10.0,11.0,12.0,13.0,14.0,15.0,16.0,17.0,18.0],"y":[0.00004145137560174206,9.388434223378539e-7,4.7039490469469314e-8,9.79421432845129e-10,4.2760683882647754e-11,6.198375146482249e-13,2.375877272697835e-14,6.26806304578078e-15,6.824365797066622e-15,1.521238962118309e-14,3.1086244689504383e-15,9.50395856378535e-15,1.2434497875801753e-14,6.050715484207103e-15],"line":{"width":2.0,"color":"firebrick"}}],"layout":{"title":{"text":"Collocation error vs. polynomial degree"},"width":800,"height":600,"font":{"size":18},"xaxis":{"title":{"text":"n"}},"yaxis":{"title":{"text":"error"},"type":"log","exponentformat":"E","tickformat":".0e"}},"config":{"toImageButtonOptions":{"format":"png","filename":"nonlinear_convergence_SineBaselineODE"}},"frames":null});
+        </script>
+    </div>
+</body>
+
+</html>

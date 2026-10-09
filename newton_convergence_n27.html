@@ -11,10 +11,10 @@
 <body>
     <div>
         <div id="plotly-html-element" class="plotly-graph-div" style="height:100%; width:100%;"></div>
-
+        
         <script type="module">
             const graph_div = document.getElementById("plotly-html-element");
-            await Plotly.newPlot(graph_div, {"data":[{"type":"scatter","name":"|R|","mode":"lines+markers","x":[0.0,1.0,2.0],"y":[0.018557274604783416,2.611749840108132e-7,4.4762561922290635e-15],"line":{"width":2.0,"color":"crimson"}}],"layout":{"title":{"text":"Newton convergence"},"xaxis":{"title":{"text":"iteration"}},"yaxis":{"title":{"text":"residual norm"},"type":"log"}},"config":{},"frames":null});
+            await Plotly.newPlot(graph_div, {"data":[{"type":"scatter","name":"|R|","mode":"lines+markers","x":[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0],"y":[36.55509192365307,8.849851151231515,2.0821713048860353,1.3261645448123458,0.24198538494524946,0.029604377533281934,0.00021582352403992644,4.184363078252318e-9,2.4096393283490336e-16],"line":{"width":2.0,"color":"crimson"}}],"layout":{"title":{"text":"Newton convergence"},"font":{"size":18},"xaxis":{"title":{"text":"iteration"}},"yaxis":{"title":{"text":"residual norm"},"type":"log"}},"config":{},"frames":null});
         </script>
     </div>
 </body>

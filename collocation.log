@@ -1,0 +1,428 @@
+03:33:55 [DEBUG] (1) collocation_refactored::toolbox::asymptotic_guess: u_minus = 1.8625413911823125
+s_param = 2.5
+dg = -3.5154697830663295
+03:33:55 [DEBUG] (1) collocation_refactored::toolbox::asymptotic_guess: u_minus = 1.8625413911823125
+s_param = 2.5
+dg = -3.5154697830663295
+03:33:55 [DEBUG] (1) collocation_refactored::toolbox::asymptotic_guess: u_minus = 1.8625413911823125
+s_param = 2.5
+bar_delta = 1.8
+critical_curve = 55.14820467459951
+left_eigen_pair = Complex { alpha: 0.2, beta: 1.0888138773158358 }
+right_eigen_pair = Real { plus: 0.9118052168020874, minus: -0.5118052168020875 }
+03:33:55 [DEBUG] (1) collocation_refactored::toolbox::asymptotic_guess: u_minus = 1.8625413911823125
+s_param = 2.5
+dg = -3.5154697830663295
+03:33:55 [INFO] Saved plot to initial_guess_s2.5_delta1.8.html
+03:33:55 [INFO] Initial guess plot written to: initial_guess_s2.5_delta1.8.html
+03:33:55 [INFO] solving at s = 2.500000
+03:33:55 [INFO]   iter   0: |r| = 8.169122e0
+03:33:55 [INFO]   iter   1: |r| = 2.577836e0
+03:33:55 [INFO]   iter   2: |r| = 3.080205e-1
+03:33:55 [INFO]   iter   3: |r| = 8.112249e-3
+03:33:55 [INFO]   iter   4: |r| = 9.331820e-6
+03:33:55 [INFO]   iter   5: |r| = 1.633721e-11
+03:33:55 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:33:55 [INFO] solving at s = 2.500000
+03:33:55 [INFO]   iter   0: |r| = 2.485203e0
+03:33:56 [INFO]   iter   1: |r| = 4.308811e-1
+03:33:56 [INFO]   iter   2: |r| = 8.364089e-3
+03:33:56 [INFO]   iter   3: |r| = 4.172316e-6
+03:33:56 [INFO]   iter   4: |r| = 1.291862e-11
+03:33:56 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:33:56 [INFO] solving at s = 2.500000
+03:33:56 [INFO]   iter   0: |r| = 2.154328e0
+03:33:56 [INFO]   iter   1: |r| = 2.768187e-1
+03:33:56 [INFO]   iter   2: |r| = 4.032018e-3
+03:33:56 [INFO]   iter   3: |r| = 9.517383e-7
+03:33:56 [INFO]   iter   4: |r| = 1.947300e-11
+03:33:56 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:33:56 [INFO] solving at s = 2.500000
+03:33:57 [INFO]   iter   0: |r| = 1.915916e0
+03:33:57 [INFO]   iter   1: |r| = 1.916338e-1
+03:33:57 [INFO]   iter   2: |r| = 1.774475e-3
+03:33:57 [INFO]   iter   3: |r| = 2.544548e-7
+03:33:57 [INFO]   iter   4: |r| = 2.012843e-11
+03:33:57 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:33:57 [INFO] solving at s = 2.500000
+03:33:57 [INFO]   iter   0: |r| = 1.734494e0
+03:33:57 [INFO]   iter   1: |r| = 1.403369e-1
+03:33:57 [INFO]   iter   2: |r| = 8.854081e-4
+03:33:57 [INFO]   iter   3: |r| = 7.394514e-8
+03:33:57 [INFO]   iter   4: |r| = 2.052725e-11
+03:33:57 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:33:57 [INFO] solving at s = 2.500000
+03:33:58 [INFO]   iter   0: |r| = 1.590889e0
+03:33:58 [INFO]   iter   1: |r| = 1.088056e-1
+03:33:58 [INFO]   iter   2: |r| = 5.793840e-4
+03:33:58 [INFO]   iter   3: |r| = 2.735952e-8
+03:33:58 [INFO]   iter   4: |r| = 2.469916e-11
+03:33:58 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:33:58 [INFO] solving at s = 2.500000
+03:33:58 [INFO]   iter   0: |r| = 1.473613e0
+03:33:58 [INFO]   iter   1: |r| = 8.673492e-2
+03:33:58 [INFO]   iter   2: |r| = 4.013104e-4
+03:33:58 [INFO]   iter   3: |r| = 1.086062e-8
+03:33:59 [INFO]   iter   4: |r| = 2.982101e-11
+03:33:59 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:33:59 [INFO] solving at s = 2.500000
+03:33:59 [INFO]   iter   0: |r| = 1.375398e0
+03:33:59 [INFO]   iter   1: |r| = 6.974464e-2
+03:33:59 [INFO]   iter   2: |r| = 2.578744e-4
+03:33:59 [INFO]   iter   3: |r| = 4.361204e-9
+03:33:59 [INFO]   iter   4: |r| = 3.117739e-11
+03:33:59 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:33:59 [INFO] solving at s = 2.500000
+03:33:59 [INFO]   iter   0: |r| = 1.291463e0
+03:33:59 [INFO]   iter   1: |r| = 5.673815e-2
+03:33:59 [INFO]   iter   2: |r| = 1.645111e-4
+03:33:59 [INFO]   iter   3: |r| = 1.927134e-9
+03:34:00 [INFO]   iter   4: |r| = 3.309956e-11
+03:34:00 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:00 [INFO] solving at s = 2.500000
+03:34:00 [INFO]   iter   0: |r| = 1.218551e0
+03:34:00 [INFO]   iter   1: |r| = 4.716601e-2
+03:34:00 [INFO]   iter   2: |r| = 1.165251e-4
+03:34:00 [INFO]   iter   3: |r| = 9.318311e-10
+03:34:00 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:00 [INFO] solving at s = 2.500000
+03:34:00 [INFO]   iter   0: |r| = 1.154364e0
+03:34:00 [INFO]   iter   1: |r| = 4.006506e-2
+03:34:00 [INFO]   iter   2: |r| = 8.836134e-5
+03:34:00 [INFO]   iter   3: |r| = 4.627255e-10
+03:34:00 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:00 [INFO] solving at s = 2.500000
+03:34:00 [INFO]   iter   0: |r| = 1.097234e0
+03:34:01 [INFO]   iter   1: |r| = 3.451790e-2
+03:34:01 [INFO]   iter   2: |r| = 6.632307e-5
+03:34:01 [INFO]   iter   3: |r| = 2.386775e-10
+03:34:01 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:01 [INFO] solving at s = 2.500000
+03:34:01 [INFO]   iter   0: |r| = 1.045920e0
+03:34:01 [INFO]   iter   1: |r| = 3.000201e-2
+03:34:01 [INFO]   iter   2: |r| = 4.906646e-5
+03:34:01 [INFO]   iter   3: |r| = 1.286690e-10
+03:34:01 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:01 [INFO] solving at s = 2.500000
+03:34:01 [INFO]   iter   0: |r| = 9.994800e-1
+03:34:01 [INFO]   iter   1: |r| = 2.627874e-2
+03:34:02 [INFO]   iter   2: |r| = 3.698720e-5
+03:34:02 [INFO]   iter   3: |r| = 8.119500e-11
+03:34:02 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:02 [INFO] solving at s = 2.500000
+03:34:02 [INFO]   iter   0: |r| = 9.571805e-1
+03:34:02 [INFO]   iter   1: |r| = 2.320051e-2
+03:34:02 [INFO]   iter   2: |r| = 2.883328e-5
+03:34:02 [INFO]   iter   3: |r| = 5.838410e-11
+03:34:02 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:02 [INFO] solving at s = 2.500000
+03:34:02 [INFO]   iter   0: |r| = 9.184431e-1
+03:34:02 [INFO]   iter   1: |r| = 2.063635e-2
+03:34:02 [INFO]   iter   2: |r| = 2.292954e-5
+03:34:02 [INFO]   iter   3: |r| = 5.941130e-11
+03:34:02 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:02 [INFO] solving at s = 2.500000
+03:34:03 [INFO]   iter   0: |r| = 8.828031e-1
+03:34:03 [INFO]   iter   1: |r| = 1.847411e-2
+03:34:03 [INFO]   iter   2: |r| = 1.835175e-5
+03:34:03 [INFO]   iter   3: |r| = 5.528079e-11
+03:34:03 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:03 [INFO] solving at s = 2.500000
+03:34:03 [INFO]   iter   0: |r| = 8.498811e-1
+03:34:03 [INFO]   iter   1: |r| = 1.662923e-2
+03:34:03 [INFO]   iter   2: |r| = 1.477326e-5
+03:34:03 [INFO]   iter   3: |r| = 6.925332e-11
+03:34:03 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:03 [INFO] solving at s = 2.500000
+03:34:03 [INFO]   iter   0: |r| = 8.193636e-1
+03:34:04 [INFO]   iter   1: |r| = 1.504080e-2
+03:34:04 [INFO]   iter   2: |r| = 1.201492e-5
+03:34:04 [INFO]   iter   3: |r| = 6.221112e-11
+03:34:04 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:04 [INFO] solving at s = 2.500000
+03:34:04 [INFO]   iter   0: |r| = 7.909878e-1
+03:34:04 [INFO]   iter   1: |r| = 1.366332e-2
+03:34:04 [INFO]   iter   2: |r| = 9.886596e-6
+03:34:04 [INFO]   iter   3: |r| = 6.355863e-11
+03:34:04 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:04 [INFO] solving at s = 2.500000
+03:34:04 [INFO]   iter   0: |r| = 7.645312e-1
+03:34:04 [INFO]   iter   1: |r| = 1.246112e-2
+03:34:04 [INFO]   iter   2: |r| = 8.216249e-6
+03:34:05 [INFO]   iter   3: |r| = 7.317776e-11
+03:34:05 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:05 [INFO] solving at s = 2.500000
+03:34:05 [INFO]   iter   0: |r| = 7.398038e-1
+03:34:05 [INFO]   iter   1: |r| = 1.140559e-2
+03:34:05 [INFO]   iter   2: |r| = 6.882506e-6
+03:34:05 [INFO]   iter   3: |r| = 6.738267e-11
+03:34:05 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:05 [INFO] solving at s = 2.500000
+03:34:05 [INFO]   iter   0: |r| = 7.166415e-1
+03:34:05 [INFO]   iter   1: |r| = 1.047371e-2
+03:34:05 [INFO]   iter   2: |r| = 5.806619e-6
+03:34:05 [INFO]   iter   3: |r| = 6.791250e-11
+03:34:05 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:05 [INFO] solving at s = 2.500000
+03:34:05 [INFO]   iter   0: |r| = 6.949018e-1
+03:34:06 [INFO]   iter   1: |r| = 9.646898e-3
+03:34:06 [INFO]   iter   2: |r| = 4.933272e-6
+03:34:06 [INFO]   iter   3: |r| = 6.670236e-11
+03:34:06 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:06 [INFO] solving at s = 2.500000
+03:34:06 [INFO]   iter   0: |r| = 6.744596e-1
+03:34:06 [INFO]   iter   1: |r| = 8.910019e-3
+03:34:06 [INFO]   iter   2: |r| = 4.219649e-6
+03:34:06 [INFO]   iter   3: |r| = 8.770514e-11
+03:34:06 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:06 [INFO] solving at s = 2.500000
+03:34:06 [INFO]   iter   0: |r| = 6.552051e-1
+03:34:06 [INFO]   iter   1: |r| = 8.250623e-3
+03:34:06 [INFO]   iter   2: |r| = 3.632068e-6
+03:34:07 [INFO]   iter   3: |r| = 8.175819e-11
+03:34:07 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:07 [INFO] solving at s = 2.500000
+03:34:07 [INFO]   iter   0: |r| = 6.370406e-1
+03:34:07 [INFO]   iter   1: |r| = 7.658372e-3
+03:34:07 [INFO]   iter   2: |r| = 3.144537e-6
+03:34:07 [INFO]   iter   3: |r| = 8.925202e-11
+03:34:07 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:07 [INFO] solving at s = 2.500000
+03:34:07 [INFO]   iter   0: |r| = 6.198793e-1
+03:34:07 [INFO]   iter   1: |r| = 7.124613e-3
+03:34:07 [INFO]   iter   2: |r| = 2.737211e-6
+03:34:07 [INFO]   iter   3: |r| = 9.145957e-11
+03:34:07 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:07 [INFO] solving at s = 2.500000
+03:34:08 [INFO]   iter   0: |r| = 6.036435e-1
+03:34:08 [INFO]   iter   1: |r| = 6.642056e-3
+03:34:08 [INFO]   iter   2: |r| = 2.394752e-6
+03:34:08 [INFO]   iter   3: |r| = 7.745892e-11
+03:34:08 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:08 [INFO] solving at s = 2.500000
+03:34:08 [INFO]   iter   0: |r| = 5.882635e-1
+03:34:08 [INFO]   iter   1: |r| = 6.204521e-3
+03:34:08 [INFO]   iter   2: |r| = 2.105124e-6
+03:34:08 [INFO]   iter   3: |r| = 8.764549e-11
+03:34:08 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:08 [INFO] solving at s = 2.500000
+03:34:08 [INFO]   iter   0: |r| = 5.736762e-1
+03:34:08 [INFO]   iter   1: |r| = 5.806736e-3
+03:34:09 [INFO]   iter   2: |r| = 1.858797e-6
+03:34:09 [INFO]   iter   3: |r| = 9.977392e-11
+03:34:09 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:09 [INFO] solving at s = 2.500000
+03:34:09 [INFO]   iter   0: |r| = 5.598249e-1
+03:34:09 [INFO]   iter   1: |r| = 5.444181e-3
+03:34:09 [INFO]   iter   2: |r| = 1.648174e-6
+03:34:09 [INFO]   iter   3: |r| = 9.599645e-11
+03:34:09 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:09 [INFO] solving at s = 2.500000
+03:34:09 [INFO]   iter   0: |r| = 5.466580e-1
+03:34:09 [INFO]   iter   1: |r| = 5.112958e-3
+03:34:09 [INFO]   iter   2: |r| = 1.467163e-6
+03:34:09 [INFO]   iter   3: |r| = 8.761433e-11
+03:34:09 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:09 [INFO] solving at s = 2.500000
+03:34:10 [INFO]   iter   0: |r| = 5.341284e-1
+03:34:10 [INFO]   iter   1: |r| = 4.809691e-3
+03:34:10 [INFO]   iter   2: |r| = 1.310847e-6
+03:34:10 [INFO]   iter   3: |r| = 1.160053e-10
+03:34:10 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:10 [INFO] solving at s = 2.500000
+03:34:10 [INFO]   iter   0: |r| = 5.221934e-1
+03:34:10 [INFO]   iter   1: |r| = 4.531445e-3
+03:34:10 [INFO]   iter   2: |r| = 1.175252e-6
+03:34:10 [INFO]   iter   3: |r| = 9.456951e-11
+03:34:10 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:10 [INFO] solving at s = 2.500000
+03:34:10 [INFO]   iter   0: |r| = 5.108139e-1
+03:34:10 [INFO]   iter   1: |r| = 4.275653e-3
+03:34:11 [INFO]   iter   2: |r| = 1.057134e-6
+03:34:11 [INFO]   iter   3: |r| = 1.149494e-10
+03:34:11 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:11 [INFO] solving at s = 2.500000
+03:34:11 [INFO]   iter   0: |r| = 4.999541e-1
+03:34:11 [INFO]   iter   1: |r| = 4.040067e-3
+03:34:11 [INFO]   iter   2: |r| = 9.538022e-7
+03:34:11 [INFO]   iter   3: |r| = 1.040819e-10
+03:34:11 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:11 [INFO] solving at s = 2.500000
+03:34:11 [INFO]   iter   0: |r| = 4.895810e-1
+03:34:11 [INFO]   iter   1: |r| = 3.822708e-3
+03:34:11 [INFO]   iter   2: |r| = 8.630696e-7
+03:34:12 [INFO]   iter   3: |r| = 1.183693e-10
+03:34:12 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:12 [INFO] solving at s = 2.500000
+03:34:12 [INFO]   iter   0: |r| = 4.796644e-1
+03:34:12 [INFO]   iter   1: |r| = 3.621831e-3
+03:34:12 [INFO]   iter   2: |r| = 7.831150e-7
+03:34:12 [INFO]   iter   3: |r| = 1.257189e-10
+03:34:12 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:12 [INFO] solving at s = 2.500000
+03:34:12 [INFO]   iter   0: |r| = 4.701765e-1
+03:34:12 [INFO]   iter   1: |r| = 3.435887e-3
+03:34:12 [INFO]   iter   2: |r| = 7.123942e-7
+03:34:12 [INFO]   iter   3: |r| = 1.067906e-10
+03:34:12 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:12 [INFO] solving at s = 2.500000
+03:34:12 [INFO]   iter   0: |r| = 4.610915e-1
+03:34:13 [INFO]   iter   1: |r| = 3.263505e-3
+03:34:13 [INFO]   iter   2: |r| = 6.496578e-7
+03:34:13 [INFO]   iter   3: |r| = 1.176708e-10
+03:34:13 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:13 [INFO] solving at s = 2.500000
+03:34:13 [INFO]   iter   0: |r| = 4.523857e-1
+03:34:13 [INFO]   iter   1: |r| = 3.103460e-3
+03:34:13 [INFO]   iter   2: |r| = 5.938199e-7
+03:34:13 [INFO]   iter   3: |r| = 1.133147e-10
+03:34:13 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:13 [INFO] solving at s = 2.500000
+03:34:13 [INFO]   iter   0: |r| = 4.440371e-1
+03:34:13 [INFO]   iter   1: |r| = 2.954662e-3
+03:34:13 [INFO]   iter   2: |r| = 5.439639e-7
+03:34:14 [INFO]   iter   3: |r| = 1.387738e-10
+03:34:14 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:14 [INFO] solving at s = 2.500000
+03:34:14 [INFO]   iter   0: |r| = 4.360253e-1
+03:34:14 [INFO]   iter   1: |r| = 2.816133e-3
+03:34:14 [INFO]   iter   2: |r| = 4.993263e-7
+03:34:14 [INFO]   iter   3: |r| = 1.390130e-10
+03:34:14 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:14 [INFO] solving at s = 2.500000
+03:34:14 [INFO]   iter   0: |r| = 4.283314e-1
+03:34:14 [INFO]   iter   1: |r| = 2.686997e-3
+03:34:14 [INFO]   iter   2: |r| = 4.592784e-7
+03:34:14 [INFO]   iter   3: |r| = 1.349931e-10
+03:34:14 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:14 [INFO] solving at s = 2.500000
+03:34:14 [INFO]   iter   0: |r| = 4.209378e-1
+03:34:15 [INFO]   iter   1: |r| = 2.566467e-3
+03:34:15 [INFO]   iter   2: |r| = 4.232415e-7
+03:34:15 [INFO]   iter   3: |r| = 1.500519e-10
+03:34:15 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:15 [INFO] solving at s = 2.500000
+03:34:15 [INFO]   iter   0: |r| = 4.138282e-1
+03:34:15 [INFO]   iter   1: |r| = 2.453832e-3
+03:34:15 [INFO]   iter   2: |r| = 3.907256e-7
+03:34:15 [INFO]   iter   3: |r| = 1.503345e-10
+03:34:15 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:15 [INFO] solving at s = 2.500000
+03:34:15 [INFO]   iter   0: |r| = 4.069875e-1
+03:34:15 [INFO]   iter   1: |r| = 2.348454e-3
+03:34:16 [INFO]   iter   2: |r| = 3.613422e-7
+03:34:16 [INFO]   iter   3: |r| = 1.476950e-10
+03:34:16 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:16 [INFO] solving at s = 2.500000
+03:34:16 [INFO]   iter   0: |r| = 4.004013e-1
+03:34:16 [INFO]   iter   1: |r| = 2.249753e-3
+03:34:16 [INFO]   iter   2: |r| = 3.346921e-7
+03:34:16 [INFO]   iter   3: |r| = 1.491273e-10
+03:34:16 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:16 [INFO] solving at s = 2.500000
+03:34:16 [INFO]   iter   0: |r| = 3.940565e-1
+03:34:16 [INFO]   iter   1: |r| = 2.157204e-3
+03:34:16 [INFO]   iter   2: |r| = 3.105080e-7
+03:34:16 [INFO]   iter   3: |r| = 1.622600e-10
+03:34:16 [DEBUG] (1) collocation_refactored: Orbit sanity check passed:
+u_minus = 1.8625413911823125
+bound = 9.312706955911562
+03:34:16 [INFO] delta sweep: 50 solutions, delta_bar 1.8000 -> 20.0000

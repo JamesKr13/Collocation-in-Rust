@@ -12,6 +12,9 @@ rayon = "1.12.0"
 lapack = "0.20"
 lapack-src = { version = "0.8", features = ["openblas"] }
 statrs = "0.18.0"
+log = "0.4.34"
+env_logger = "0.11.11"
+simplelog = "0.12.2"
 
 [dependencies.openblas-src]
 version = "0.10"

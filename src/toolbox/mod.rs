@@ -4,3 +4,5 @@ pub mod banded_solver;
 pub mod test_odes;
 pub mod trig_trait;
 pub mod grapher;
+pub mod pb;
+pub mod asymptotic_guess;

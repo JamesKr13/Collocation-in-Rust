@@ -1,89 +1,134 @@
-fn run_baseline<T>()
-where
-    T: num_traits::Float + Scalar
-        + Mul<Output = T>
-        + Add<Output = T>
-        + Sub<Output = T>
-        + Div<Output = T>
-        + AddAssign
-        + Neg<Output = T>
-        + Copy
-        + RealField
-        + FromPrimitive
-        + ToPrimitive
-        + Zero
-        + Send
-        + Sync
-        + LowerExp
-        + Trig
-        + 'static,
-{
-    use crate::toolbox::test_odes::SineBaselineODE;
+use std::sync::{
+    Arc,
+    atomic::{AtomicBool, Ordering},
+};
 
-    let d = (0.0, 1.0);
-    let domain = MultiIntervalDomain::<T>::new(
-        polynomial_trait::PolynomialKind::Chebyshev, 13, d, 1, IntervalDivision::Uniform,
-    );
+use crate::toolbox::test_odes::{
+    CubicReactionManufacturedODE,
+    KdvSolitonODE,
+    ManufacturedSolutionODE,
+    PendulumODE,
+    SineBaselineODE,
+};
+use crate::nonlinear_solve_convergence;
 
-    // Zero initial guess. Since the operator is linear in u, the
-    // Jacobian is exact and constant, so a single linear solve gives
-    // the collocation solution directly: J * delta = -r, u = u0 + delta.
-    let u0 = DVector::from_vec(
-        domain.intervals.iter()
-            .flat_map(|a| a.map_to_physical().map(|_| T::zero()).iter().copied().collect::<Vec<T>>())
-            .collect(),
-    );
+const TEST_INTERVALS: usize = 1;
 
-    let (j_mat, r) = build_j_r::<T, SineBaselineODE>(
-        &SineBaselineODE, &u0, &domain,
-        Some(SineBaselineODE::forcing),
-        &SineBaselineODE::bc_left(), &SineBaselineODE::bc_right(),
-    );
+pub fn run_pendulum(degrees: &[usize], running: Arc<AtomicBool>) {
+    let exact = |x: f64| 0.5 * (x - 1.0) * x.sin();
+    let initial_guess = |_x: f64| 0.0;
+    let name = "Pendulm_ODE";
 
-    // Direct dense linear solve via nalgebra's LU decomposition,
-    // rather than Newton iteration or the banded solver.
-    let rhs = -&r;
-    let delta = j_mat
-        .clone()
-        .lu()
-        .solve(&rhs)
-        .expect("linear system should be nonsingular for the baseline problem");
-
-    let u = u0 + delta;
-
-    // Verify against the exact solution u(x) = sin(x): assemble the
-    // exact values at the same physical nodes, and report L2/L-infinity
-    // discretization error.
-    let x_phys: Vec<T> = domain.intervals.iter()
-        .flat_map(|a| a.map_to_physical().iter().copied().collect::<Vec<T>>())
-        .collect();
-    let u_exact: DVector<T> = DVector::from_vec(
-        x_phys.iter().map(|&x| x.sin()).collect()
-    );
-
-    let err = &u - &u_exact;
-    let l2_err = err.norm().to_f64().unwrap();
-    let linf_err = err.iter()
-        .map(|v| v.abs().to_f64().unwrap())
-        .fold(0.0_f64, f64::max);
-
-    println!("Baseline (u'' + u = 0, u(0)=0, u(1)=sin(1)):");
-    println!("  L2 error   = {l2_err:.3e}");
-    println!("  Linf error = {linf_err:.3e}");
-
-    // Residual at the solution, purely as a sanity check that the
-    // linear solve actually zeroed the collocation equations.
-    let (_, r_final) = build_j_r::<T, SineBaselineODE>(
-        &SineBaselineODE, &u, &domain,
-        Some(SineBaselineODE::forcing),
-        &SineBaselineODE::bc_left(), &SineBaselineODE::bc_right(),
-    );
-    println!("  Residual after solve = {:.3e}", r_final.norm());
-
-    plot_solutions(
-        &[("Collocation approx.", u.clone()), ("Exact sin(x)", u_exact)],
-        &domain,
-        "Baseline: u'' + u = 0, exact u = sin(x)",
-        "baseline_sine.html",
+    nonlinear_solve_convergence::<f64, PendulumODE, _, _>(
+        &PendulumODE,
+        exact,
+        initial_guess,
+        degrees,
+        (0.0, 1.0),
+        TEST_INTERVALS,
+        None,
+        running,
+        name,
     );
 }
+
+pub fn run_sine_baseline(degrees: &[usize], running: Arc<AtomicBool>) {
+    let exact = |x: f64| x.sin();
+    let initial_guess = |_x: f64| 0.0;
+    let name = "SineBaselineODE";
+
+    nonlinear_solve_convergence::<f64, SineBaselineODE, _, _>(
+        &SineBaselineODE,
+        exact,
+        initial_guess,
+        degrees,
+        (0.0, 1.0),
+        TEST_INTERVALS,
+        None,
+        running,
+        name,
+    );
+}
+
+pub fn run_manufactured(degrees: &[usize], running: Arc<AtomicBool>) {
+    let beta = ManufacturedSolutionODE::BETA;
+    let exact = move |x: f64| 1.0 / (1.0 + beta * x * x);
+    let initial_guess = |_x: f64| 0.0;
+
+    let b = 1.0 / beta.sqrt();
+    let rho_star = b + (1.0 + 1.0/beta).sqrt();
+    let name = "ManufacturedSolutionODE";
+
+    nonlinear_solve_convergence::<f64, ManufacturedSolutionODE, _, _>(
+        &ManufacturedSolutionODE,
+        exact,
+        initial_guess,
+        degrees,
+        (-1.0, 1.0),
+        TEST_INTERVALS,
+        Some((rho_star, 1.0)),
+        running,
+        name,
+    );
+}
+
+pub fn run_cubic_manufactured(degrees: &[usize], running: Arc<AtomicBool>) {
+    let beta = CubicReactionManufacturedODE::BETA;
+
+    let exact = move |x: f64| {
+        (std::f64::consts::PI * x).sin() / (1.0 + beta * x * x)
+    };
+
+    let initial_guess = move |x: f64| {
+        0.2 * (std::f64::consts::PI * x).sin() / (1.0 + beta * x * x)
+    };
+
+    let b = 1.0 / beta.sqrt();
+    let rho_star = b + (1.0 + b * b).sqrt();
+    let name = "CubicReactionManufacturedODE";
+
+    nonlinear_solve_convergence::<f64, CubicReactionManufacturedODE, _, _>(
+        &CubicReactionManufacturedODE,
+        exact,
+        initial_guess,
+        degrees,
+        (-1.0, 1.0),
+        TEST_INTERVALS,
+        Some((rho_star, 1.0)),
+        running,
+        name,
+    );
+}
+
+pub fn run_kdv(degrees: &[usize], running: Arc<AtomicBool>) {
+    let c = KdvSolitonODE::SPEED;
+    let lambda = c.sqrt();
+    let l_domain = 10.0;
+
+    let exact = move |x: f64| {
+        c / (0.5 * lambda * x).cosh().powi(2)
+    };
+
+    let initial_guess = move |x: f64| {
+        3.0 * c / (0.5 * lambda * x).cosh().powi(2)
+    };
+
+    let b = std::f64::consts::PI / (lambda * l_domain);
+    let z_star = std::f64::consts::PI /(l_domain*KdvSolitonODE::SPEED.sqrt());
+    let rho_star = (z_star + (z_star.powi(2)+1.0).sqrt()).abs();
+    let name = "KdvSolitonODE";
+
+    nonlinear_solve_convergence::<f64, KdvSolitonODE, _, _>(
+        &KdvSolitonODE,
+        exact,
+        initial_guess,
+        degrees,
+        (-l_domain, l_domain),
+        TEST_INTERVALS,
+        Some((rho_star, 1.0)),
+        running,
+        name,
+    );
+}
+
+

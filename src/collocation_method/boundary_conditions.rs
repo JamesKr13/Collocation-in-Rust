@@ -10,6 +10,7 @@ pub enum BoundaryCondition<T> {
     Neumann(T),
     Robin { alpha: T, beta: T, value: T },
     RobinQuadratic { alpha: T, beta: T, gamma: T, value: T },
+    CharacteristicEq { sum: T, product: T, value: T },
 }
 
 pub enum Endpoint {
@@ -33,6 +34,13 @@ where
             BoundaryCondition::Neumann(val) => {
                 let du = Operations::apply_matrix(d, u);
                 du[idx] - *val
+            }
+
+            BoundaryCondition::CharacteristicEq { sum, product, value } => {
+                let du  = Operations::apply_matrix(d, u);
+                let d2u = Operations::apply_matrix(d, &du);
+
+                d2u[idx] - *sum * du[idx] + *product * (u[idx] - *value)
             }
 
             BoundaryCondition::Robin { alpha, beta, value } => {

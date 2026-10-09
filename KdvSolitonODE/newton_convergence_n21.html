@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+        <script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+        
+</head>
+
+<body>
+    <div>
+        <div id="plotly-html-element" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+
+        <script type="module">
+            const graph_div = document.getElementById("plotly-html-element");
+            await Plotly.newPlot(graph_div, {"data":[{"type":"scatter","name":"|R|","mode":"lines+markers","x":[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0,11.0],"y":[37.3311008911315,9.085844293449057,2.281271145237496,3.6027562602119065,62.481777953422295,14.996934774532413,3.7522250344722714,0.5726452570331775,0.07061819053375817,0.0008698554544634973,1.435661536319799e-7,3.552713678800501e-15],"line":{"width":2.0,"color":"crimson"}}],"layout":{"title":{"text":"Newton convergence"},"font":{"size":18},"xaxis":{"title":{"text":"iteration"}},"yaxis":{"title":{"text":"residual norm"},"type":"log","exponentformat":"E","tickformat":".0e"}},"config":{"toImageButtonOptions":{"format":"png","filename":"newton_convergence_n21_KdvSolitonODE"}},"frames":null});
+        </script>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+        <script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+        
+</head>
+
+<body>
+    <div>
+        <div id="plotly-html-element" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+
+        <script type="module">
+            const graph_div = document.getElementById("plotly-html-element");
+            await Plotly.newPlot(graph_div, {"data":[{"type":"scatter","name":"|R|","mode":"lines+markers","x":[0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0],"y":[36.751261004760735,8.915256693171488,2.1239718589188845,4.5483011643729645,1.0692947679550677,0.1678416278949585,0.01605330969176233,0.00006315082823427076,4.3437253793854325e-10],"line":{"width":2.0,"color":"crimson"}}],"layout":{"title":{"text":"Newton convergence"},"font":{"size":18},"xaxis":{"title":{"text":"iteration"}},"yaxis":{"title":{"text":"residual norm"},"type":"log","exponentformat":"E","tickformat":".0e"}},"config":{"toImageButtonOptions":{"format":"png","filename":"newton_convergence_n25_KdvSolitonODE"}},"frames":null});
+        </script>
+    </div>
+</body>
+
+</html>

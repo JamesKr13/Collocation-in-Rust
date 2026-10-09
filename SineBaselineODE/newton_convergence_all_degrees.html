@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+        <script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+        
+</head>
+
+<body>
+    <div>
+        <div id="plotly-html-element" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+
+        <script type="module">
+            const graph_div = document.getElementById("plotly-html-element");
+            await Plotly.newPlot(graph_div, {"data":[{"type":"scatter","name":"n = 5","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,1.176836406102666e-14]},{"type":"scatter","name":"n = 6","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,2.886579864025407e-15]},{"type":"scatter","name":"n = 7","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,3.0753177782116836e-14]},{"type":"scatter","name":"n = 8","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,8.359979375427429e-14]},{"type":"scatter","name":"n = 9","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,2.320366121466577e-13]},{"type":"scatter","name":"n = 10","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,4.369837824924616e-13]},{"type":"scatter","name":"n = 11","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,4.2077452633293433e-13]},{"type":"scatter","name":"n = 12","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,5.718758799844181e-13]},{"type":"scatter","name":"n = 13","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,3.3939517862791035e-13]},{"type":"scatter","name":"n = 14","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,7.780442956573097e-13]},{"type":"scatter","name":"n = 15","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,6.430411758628907e-13]},{"type":"scatter","name":"n = 16","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,3.149924765466494e-12]},{"type":"scatter","name":"n = 17","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,4.024114375056342e-12]},{"type":"scatter","name":"n = 18","mode":"lines+markers","x":[0,1],"y":[0.8414709848078965,9.577894033441225e-13]}],"layout":{"title":{"text":"Newton convergence across degrees"},"font":{"size":18},"xaxis":{"title":{"text":"Iteration"}},"yaxis":{"title":{"text":"Residual norm |F|"},"type":"log","exponentformat":"E","tickformat":".0e"}},"config":{"toImageButtonOptions":{"format":"png","filename":"SineBaselineODE_convergence"}},"frames":null});
+        </script>
+    </div>
+</body>
+
+</html>

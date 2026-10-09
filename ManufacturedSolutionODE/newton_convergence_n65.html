@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+        <script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+        
+</head>
+
+<body>
+    <div>
+        <div id="plotly-html-element" class="plotly-graph-div" style="height:100%; width:100%;"></div>
+
+        <script type="module">
+            const graph_div = document.getElementById("plotly-html-element");
+            await Plotly.newPlot(graph_div, {"data":[{"type":"scatter","name":"|R|","mode":"lines+markers","x":[0.0,1.0],"y":[7.0,8.244449567484935e-11],"line":{"width":2.0,"color":"crimson"}}],"layout":{"title":{"text":"Newton convergence"},"font":{"size":18},"xaxis":{"title":{"text":"iteration"}},"yaxis":{"title":{"text":"residual norm"},"type":"log","exponentformat":"E","tickformat":".0e"}},"config":{"toImageButtonOptions":{"format":"png","filename":"newton_convergence_n65_ManufacturedSolutionODE"}},"frames":null});
+        </script>
+    </div>
+</body>
+
+</html>

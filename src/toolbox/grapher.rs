@@ -1,19 +1,72 @@
+use log::Level::Trace;
+use log::{debug, info};
 // grapher.rs
 use nalgebra::{DVector, Scalar};
 use num_traits::{FromPrimitive, ToPrimitive, Zero};
+use plotly::configuration::{ImageButtonFormats, ToImageButtonOptions};
 use std::ops::{Add, AddAssign, Div, Mul, Neg, Sub};
-use plotly::{Plot, Scatter};
-use plotly::common::{Mode, Line, Marker, MarkerSymbol, DashType};
+use plotly::{Configuration, Plot, Scatter};
+use plotly::common::{DashType, Font, Line, Marker, MarkerSymbol, Mode, ExponentFormat};
 use plotly::layout::{Layout, Axis, AxisType};
 
 use crate::h_interval::multi_interval::MultiIntervalDomain;
 use super::trig_trait::Trig;
+use super::super::ContinuationErrorPanel;
 
-/// Generic barycentric weights for an arbitrary node set, computed
-/// directly from the node positions via the product formula
-/// w_j = 1 / prod_{k != j} (x_j - x_k). Works for any nodes (Chebyshev
-/// Gauss or Gauss-Lobatto), since it makes no assumption about which
-/// convention produced them.
+
+/// Creates the parent folder of `filename` if it doesn't exist yet.
+/// Works for bare filenames ("a.html") and nested paths ("study/a.html").
+fn ensure_parent(filename: &str) {
+    if let Some(parent) = std::path::Path::new(filename).parent() {
+        // A bare filename has an empty parent, which needs no folder.
+        if !parent.as_os_str().is_empty() {
+            std::fs::create_dir_all(parent).expect("failed to create output folder");
+        }
+    }
+}
+
+/// Writes a plot to `filename`, creating any missing folders first.
+fn write_plot(plot: &Plot, filename: &str) {
+    ensure_parent(filename);
+    plot.write_html(filename);
+}
+
+/// Writes raw HTML text to `filename`, creating any missing folders first.
+fn write_html_text(filename: &str, html: &str) {
+    ensure_parent(filename);
+    std::fs::write(filename, html).expect("failed to write html file");
+}
+
+
+/// Log axis that always shows ticks in scientific notation (1e-5, 2e-5, ...).
+fn log_axis(title: &str) -> Axis {
+    Axis::new()
+        .title(plotly::common::Title::new().text(title))
+        .type_(AxisType::Log)
+        .exponent_format(ExponentFormat::CapitalE)
+        .tick_format(".0e")
+}
+
+/// Sets the filename used by the camera button in the HTML plot.
+fn set_png_name(plot: &mut Plot, camera_name: &str) {
+    plot.set_configuration(
+        Configuration::new().to_image_button_options(
+            ToImageButtonOptions::new()
+                .format(ImageButtonFormats::Png)
+                .filename(camera_name),
+        ),
+    );
+}
+
+/// File name without folder or extension ("a/b/c.html" -> "c").
+fn stem(filename: &str) -> &str {
+    std::path::Path::new(filename)
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or(filename)
+}
+
+
 fn barycentric_weights(nodes: &[f64]) -> Vec<f64> {
     let n = nodes.len();
     let mut w = vec![1.0; n];
@@ -62,6 +115,7 @@ pub fn plot_solutions<T>(
     exact: Option<(&str, &dyn Fn(f64) -> f64)>,
     title: &str,
     filename: &str,
+    camera_name: &str,
 ) where
     T: FromPrimitive
         + ToPrimitive
@@ -87,15 +141,10 @@ pub fn plot_solutions<T>(
     ];
 
     let mut plot = Plot::new();
-
-    // Track the overall x-range across every solution's own domain so the
-    // optional exact-solution curve can be sampled over the full extent.
     let mut x_min = f64::INFINITY;
     let mut x_max = f64::NEG_INFINITY;
 
     for (idx, (label, u, domain)) in solutions.iter().enumerate() {
-        // Build node/weight data fresh for THIS solution's domain — degrees
-        // or interval counts may differ between entries.
         let mut interval_infos = Vec::new();
         let mut offset = 0usize;
         for interval in domain.intervals.iter() {
@@ -164,14 +213,10 @@ pub fn plot_solutions<T>(
                     .symbol(MarkerSymbol::CircleOpen),
             )
             .show_legend(false);
-
         plot.add_trace(line);
         plot.add_trace(nodes_trace);
     }
 
-    // Overlay the true/exact solution as a smooth dashed reference curve,
-    // sampled directly (no barycentric interpolation needed — we have the
-    // closed form).
     if let Some((label, f)) = exact {
         const EXACT_SAMPLES: usize = 400;
         let mut ex_x = Vec::with_capacity(EXACT_SAMPLES);
@@ -189,7 +234,7 @@ pub fn plot_solutions<T>(
                 Line::new()
                     .color("black")
                     .width(2.0)
-                    .dash(plotly::common::DashType::Dash),
+                    .dash(DashType::Dash),
             );
         plot.add_trace(exact_line);
     }
@@ -199,16 +244,17 @@ pub fn plot_solutions<T>(
         .title(plotly::common::Title::new().text(title))
         .x_axis(Axis::new().title(plotly::common::Title::new().text("x")))
         .y_axis(Axis::new().title(plotly::common::Title::new().text("u(x)")))
-        .show_legend(true);
+        .show_legend(true).font(Font::new().size(18));
 
+    set_png_name(&mut plot, camera_name);
     plot.set_layout(layout);
-    plot.write_html(filename);
-    println!("Saved plot to {filename}");
+    write_plot(&plot, filename);
+    info!("Saved plot to {filename}");
 }
 
 /// Plot residual norm vs iteration on a log-y scale to visualize
 /// Newton convergence.
-pub fn plot_convergence(norms: &[f64], filename: &str) {
+pub fn plot_convergence(norms: &[f64], filename: &str, camera_name: &str) {
     let iters: Vec<f64> = (0..norms.len()).map(|i| i as f64).collect();
 
     let trace = Scatter::new(iters, norms.to_vec())
@@ -222,20 +268,16 @@ pub fn plot_convergence(norms: &[f64], filename: &str) {
     let layout = Layout::new()
         .title(plotly::common::Title::new().text("Newton convergence"))
         .x_axis(Axis::new().title(plotly::common::Title::new().text("iteration")))
-        .y_axis(
-            Axis::new()
-                .title(plotly::common::Title::new().text("residual norm"))
-                .type_(plotly::layout::AxisType::Log),
-        );
+        .y_axis(log_axis("residual norm"))
+        .font(Font::new().size(18));
 
+    let new_name = stem(filename);
+    set_png_name(&mut plot, &format!("{new_name}_{camera_name}"));
     plot.set_layout(layout);
-    plot.write_html(filename);
-    println!("Saved plot to {filename}");
+    write_plot(&plot, filename);
+    info!("Saved plot to {filename}");
 }
 
-/// Plot L2/L-infinity discretization error vs. polynomial degree n,
-/// on a log-y scale, for verification against Jackson's/Bernstein's
-/// predicted convergence rates (Section 5.1).
 /// Plot L2/L-infinity discretization error vs. polynomial degree n,
 /// on a log-y scale, optionally overlaid with the theoretical
 /// convergence rate predicted by Bernstein's theorem (Theorem 2.1.7),
@@ -246,6 +288,7 @@ pub fn plot_error_vs_degree(
     linf_errors: &[f64],
     theory: Option<(f64, f64)>, // (rho_star, leading constant C)
     filename: &str,
+    camera_name: &str,
 ) {
     let n_vals: Vec<f64> = degrees.iter().map(|&n| n as f64).collect();
 
@@ -270,30 +313,125 @@ pub fn plot_error_vs_degree(
         let theory_trace = Scatter::new(n_vals, theory_vals)
             .name(format!("Theory: O(ρ*^-n), ρ* = {rho_star:.3}"))
             .mode(Mode::Lines)
-            .line(Line::new().color("gray").width(1.5).dash(plotly::common::DashType::Dash));
+            .line(Line::new().color("gray").width(1.5).dash(DashType::Dash));
         plot.add_trace(theory_trace);
     }
 
     let layout = Layout::new().width(800)
         .height(600)
-        .title(plotly::common::Title::new().text("Discretization error vs. polynomial degree"))
+        .title(plotly::common::Title::new().text("Collocation error vs. polynomial degree"))
         .x_axis(Axis::new().title(plotly::common::Title::new().text("n")))
+        .y_axis(log_axis("error"))
+        .font(Font::new().size(18));
+
+    let new_name = stem(filename);
+    set_png_name(&mut plot, &format!("{new_name}_{camera_name}"));
+    plot.set_layout(layout);
+    write_plot(&plot, filename);
+    info!("Saved plot to {filename}");
+}
+
+pub fn plot_all_h_step_solutions(
+    solutions: &[(MultiIntervalDomain<f64>, DVector<f64>)],
+    errors: &[Vec<(f64, f64)>],
+    filename: &str,
+) {
+    let mut plot = Plot::new();
+
+    /*
+     * Solution traces
+     */
+    for (domain, u) in solutions.iter() {
+        let mut points: Vec<(f64, f64)> = Vec::new();
+
+        let mut offset = 0usize;
+
+        for interval in &domain.intervals {
+            let n = interval.n_nodes;
+            let x_nodes = interval.map_to_physical();
+
+            for j in 0..n {
+                points.push((
+                    x_nodes[j],
+                    u[offset + j],
+                ));
+            }
+
+            offset += n;
+        }
+
+        points.sort_by(|a, b| a.0.total_cmp(&b.0));
+
+        let (x_all, y_all): (Vec<f64>, Vec<f64>) =
+            points.into_iter().unzip();
+
+        let trace = Scatter::new(x_all, y_all)
+            .mode(Mode::Lines)
+            .name(format!("Domain={:?}", domain.domain))
+            .line(Line::new().width(3.0));
+
+        plot.add_trace(trace);
+    }
+
+    for (i, error) in errors.iter().enumerate() {
+        if error.is_empty() {
+            continue;
+        }
+
+        let mut error_points = error.clone();
+
+        error_points.sort_by(|a, b| a.0.total_cmp(&b.0));
+
+        let (error_x, error_y): (Vec<f64>, Vec<f64>) =
+            error_points.into_iter().unzip();
+
+        let error_trace = Scatter::new(error_x, error_y)
+            .mode(Mode::Lines)
+            .x_axis("x2")
+            .y_axis("y2")
+            .line(Line::new().width(3.0)).show_legend(false);
+
+        plot.add_trace(error_trace);
+    }
+
+    let layout = Layout::new()
+        .title("Collocation solutions under domain expansion")
+        .height(900)
+        .width(1200)
+        .x_axis(
+            Axis::new()
+                .anchor("y")
+                .dtick(0.5)
+                .show_grid(true),
+        )
         .y_axis(
             Axis::new()
-                .title(plotly::common::Title::new().text("error"))
-                .type_(plotly::layout::AxisType::Log),
-        );
+                .title("u(ζ)")
+                .domain(&[0.38, 1.0]),
+        )
+        .x_axis2(
+            Axis::new()
+                .title("ζ")
+                .anchor("y2")
+                .matches("x"),
+        )
+        .y_axis2(
+            Axis::new()
+                .title("Domain Error")
+                .domain(&[0.0, 0.28]),
+        )
+        .font(Font::new().size(20));
 
     plot.set_layout(layout);
+
     plot.write_html(filename);
-    println!("Saved plot to {filename}");
 }
 
 pub fn plot_error_vs_degree_loglog(
     degrees: &[usize],
     l2_errors: &[f64],
     linf_errors: &[f64],
-    theory: Option<(f64, f64)>, // (rate k, leading constant C), error ~ C * n^{-k}
+    theory: Option<(f64, f64)>,
     filename: &str,
 ) {
     let n_vals: Vec<f64> = degrees.iter().map(|&n| n as f64).collect();
@@ -325,23 +463,17 @@ pub fn plot_error_vs_degree_loglog(
 
     let layout = Layout::new()
         .title(plotly::common::Title::new().text("Discretization error vs. polynomial degree (log-log)"))
-        .x_axis(
-            Axis::new()
-                .title(plotly::common::Title::new().text("n"))
-                .type_(AxisType::Log),
-        )
-        .y_axis(
-            Axis::new()
-                .title(plotly::common::Title::new().text("error"))
-                .type_(AxisType::Log),
-        );
+        .x_axis(log_axis("n"))
+        .y_axis(log_axis("error"))
+        .font(Font::new().size(18));
 
+    set_png_name(&mut plot, stem(filename));
     plot.set_layout(layout);
-    plot.write_html(filename);
-    println!("Saved plot to {filename}");
+    write_plot(&plot, filename);
+    info!("Saved plot to {filename}");
 }
 
-pub fn plot_convergence_multi(all_norms: &[(String, Vec<f64>)], filename: &str) {
+pub fn plot_convergence_multi(all_norms: &[(String, Vec<f64>)], filename: &str, camera_name: &str) {
     let mut plot = Plot::new();
 
     for (label, norms) in all_norms {
@@ -358,14 +490,13 @@ pub fn plot_convergence_multi(all_norms: &[(String, Vec<f64>)], filename: &str) 
     let layout = Layout::new()
         .title("Newton convergence across degrees")
         .x_axis(Axis::new().title("Iteration"))
-        .y_axis(
-            Axis::new()
-                .title("Residual norm |F|")
-                .type_(AxisType::Log),
-        );
+        .y_axis(log_axis("Residual norm |F|"))
+        .font(Font::new().size(18));
 
+    set_png_name(&mut plot, camera_name);
     plot.set_layout(layout);
-    plot.write_html(filename);
+    write_plot(&plot, filename);
+    info!("Saved plot to {filename}");
 }
 
 pub fn plot_error_vs_intervals_multi(
@@ -416,22 +547,134 @@ pub fn plot_error_vs_intervals_multi(
         plot.add_trace(theory_trace);
     }
 
-    let mut layout = Layout::new().width(800)
+    let layout = Layout::new().width(800)
         .height(600)
         .title(plotly::common::Title::new().text("Discretization error vs. number of intervals (h-refinement)"))
-        .x_axis(
-            Axis::new()
-                .title(plotly::common::Title::new().text("K (intervals)"))
-                .type_(if loglog { AxisType::Log } else { AxisType::Linear }),
-        )
-        .y_axis(
-            Axis::new()
-                .title(plotly::common::Title::new().text("error"))
-                .type_(AxisType::Log),
-        )
-        .show_legend(true);
+        .x_axis(if loglog {
+            log_axis("K (intervals)")
+        } else {
+            Axis::new().title(plotly::common::Title::new().text("K (intervals)"))
+        })
+        .y_axis(log_axis("error"))
+        .show_legend(true).font(Font::new().size(18));
 
+    set_png_name(&mut plot, stem(filename));
     plot.set_layout(layout);
-    plot.write_html(filename);
-    println!("Saved plot to {filename}");
+    write_plot(&plot, filename);
+    info!("Saved plot to {filename}");
+}
+
+
+
+pub fn plot_continuation_error_grid(panels:&[ContinuationErrorPanel],cols:usize,filename:&str){
+    if panels.is_empty(){return;}
+    let cols=cols.max(1);
+
+    let mut html=format!(r#"<!DOCTYPE html><html><head><meta charset="utf-8"><script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script><style>body{{font-family:sans-serif;padding:20px}}.grid{{display:grid;grid-template-columns:repeat({},minmax(400px,1fr));gap:15px}}</style></head><body><div class="grid">"#,cols);
+
+    for(i,p)in panels.iter().enumerate(){
+        let x:Vec<f64>=p.degrees.iter().map(|&n|n as f64).collect();
+        let mut plot=Plot::new();
+
+        plot.add_trace(Scatter::new(x.clone(),p.l2_errors.clone()).name("L2").mode(Mode::LinesMarkers));
+        plot.add_trace(Scatter::new(x,p.linf_errors.clone()).name("Linf").mode(Mode::LinesMarkers));
+
+        plot.set_layout(Layout::new()
+            .height(400)
+            .title(format!("s = {:.5}",p.speed))
+            .x_axis(Axis::new().title("Polynomial n"))
+            .y_axis(log_axis("Error")));
+
+        html.push_str(&plot.to_inline_html(Some(&format!("plot-{i}"))));
+    }
+
+    html.push_str("</div></body></html>");
+    write_html_text(filename, &html);
+    info!("Saved plot to {filename}");
+}
+
+
+
+pub fn plot_guess<F>(
+    mut guess: F,
+    bounds: (f64, f64),
+    samples: usize,
+    title: &str,
+    filename: &str,
+) where
+    F: FnMut(f64) -> f64,
+{
+    let (a, b) = bounds;
+    assert!(a.is_finite() && b.is_finite() && a < b);
+    assert!(samples >= 2);
+
+    let mut xs: Vec<f64> = (0..samples)
+        .map(|i| {
+            let t = i as f64 / (samples - 1) as f64;
+            (1.0 - t) * a + t * b
+        })
+        .collect();
+
+    // Include the point where the two asymptotic pieces join.
+    if a < 0.0 && b > 0.0 {
+        xs.push(0.0);
+        xs.sort_by(f64::total_cmp);
+        xs.dedup();
+    }
+
+    let ys: Vec<f64> = xs.iter()
+        .map(|&x| {
+            let y = guess(x);
+            assert!(y.is_finite(), "Non-finite initial guess at x = {x}");
+            y
+        })
+        .collect();
+
+    let trace = Scatter::new(xs, ys)
+        .name("Initial guess")
+        .mode(Mode::Lines)
+        .line(Line::new().color("steelblue").width(2.5));
+
+    let mut plot = Plot::new();
+    plot.add_trace(trace);
+
+    set_png_name(&mut plot, stem(filename));
+    plot.set_layout(
+        Layout::new()
+            .width(800)
+            .height(600)
+            .title(plotly::common::Title::new().text(title))
+            .x_axis(
+                Axis::new().title(plotly::common::Title::new().text("x"))
+            )
+            .y_axis(
+                Axis::new().title(plotly::common::Title::new().text("u(x)"))
+            )
+            .font(Font::new().size(18)),
+    );
+
+    write_plot(&plot, filename);
+    info!("Saved plot to {filename}");
+}
+
+
+pub fn plot_iterates<T>(
+    iterates: &[(String, DVector<T>)],
+    domain: &MultiIntervalDomain<T>,
+    exact: &dyn Fn(f64) -> f64,
+    title: &str,
+    filename: &str,
+    camera_name: &str,
+) where
+    T: FromPrimitive + ToPrimitive + Zero + Scalar + Copy + Sync
+        + Add<Output = T> + Sub<Output = T> + Mul<Output = T> + Div<Output = T>
+        + AddAssign + Neg<Output = T> + Trig + 'static,
+{
+    let entries: Vec<(&str, DVector<T>, &MultiIntervalDomain<T>)> = iterates
+        .iter()
+        .map(|(label, u)| (label.as_str(), u.clone(), domain))
+        .collect();
+
+    plot_solutions(&entries, Some(("Exact", exact)), title, filename, camera_name);
+    debug!("Iterations saved to {:?}", filename);
 }
